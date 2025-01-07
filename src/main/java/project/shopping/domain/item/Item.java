@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import project.shopping.domain.Category;
+import project.shopping.exception.NotEnoughStockException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,21 @@ public class Item {
 
     private String name;
     private int price;
-    private int sockQuantity;
+    private int stockQuantity;
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+    public void addStock(int qauntity) {
+        this.stockQuantity += qauntity;
+    }
+
+    public void removeStock(int qauntity) {
+        int restStock = this.stockQuantity -= qauntity;
+        if(restStock < 0) {
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity = restStock;
+    }
 
 }
