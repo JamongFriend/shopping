@@ -4,10 +4,7 @@ import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shopping.domain.Delivery;
-import project.shopping.domain.Member;
-import project.shopping.domain.Order;
-import project.shopping.domain.OrderItem;
+import project.shopping.domain.*;
 import project.shopping.domain.item.Item;
 import project.shopping.repository.ItemRepository;
 import project.shopping.repository.MemberRepository;
@@ -30,6 +27,7 @@ public class OrderService {
 
         Delivery delivery = new Delivery();
         delivery.setAddress(member.getAddress());
+        delivery.setStatus(DeliveryStatus.READY);
 
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
@@ -39,6 +37,7 @@ public class OrderService {
         return order.getId();
     }
 
+    @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
