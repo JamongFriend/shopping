@@ -9,6 +9,7 @@ import project.shopping.domain.item.Item;
 import project.shopping.repository.ItemRepository;
 import project.shopping.repository.MemberRepository;
 import project.shopping.repository.OrderRepository;
+import project.shopping.repository.OrderSearch;
 
 import java.util.List;
 
@@ -43,8 +44,8 @@ public class OrderService {
         order.cancel();
     }
 
-    // public List<Order> findOrders(OrderSearch orderSearch){
-    //     retrun orderRepository.findAll(orderSearch);
-    // }
+     public List<Order> findOrders(OrderSearch orderSearch){
+         return orderRepository.findAll(orderSearch);
+     }
 
 }
