@@ -25,4 +25,5 @@
 
 ---
 ## Domain
+![쇼핑 플랫폼 도메인](diagram/domain.png)
 
