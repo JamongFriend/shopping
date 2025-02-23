@@ -1,14 +1,12 @@
 spring:
   thymeleaf:
     prefix: classpath:/templates/
-  suffix: .html
-
+    suffix: .html
   datasource:
     url: jdbc:h2:tcp://localhost/~/jpashop
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
   jpa:
     open-in-view: false
     hibernate:
