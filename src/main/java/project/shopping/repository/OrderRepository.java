@@ -4,12 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import project.shopping.domain.Member;
 import project.shopping.domain.Order;
-import project.shopping.domain.OrderItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +49,16 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
 
         return query.getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery("select o from Order o"
+                + "join fetch o.member m"
+                + "join fetch 0.delivery d", Order.class).getResultList();
+    }
+
+    public List<OrderSimpleQueryDto> findOrderDtos() {
+        return em.createQuery("select new jpabook.jpashop.repository.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.orderStatus, o.address)"
+                        + "from Order o" + "from o.member m" + "from o.delivery d", OrderSimpleQueryDto.class).getResultList();
     }
 }
