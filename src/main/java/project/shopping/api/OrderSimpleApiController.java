@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sun.awt.image.MultiResolutionCachedImage.map;
-
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
@@ -43,11 +41,6 @@ public class OrderSimpleApiController {
         List<SimpleOrderDto> result = all.stream().map(o -> new SimpleOrderDto(o))
                 .collect(Collectors.toList());
         return result;
-    }
-
-    @GetMapping("/api/v4/simple-orders")
-    public List<SimpleOrderDto> ordersV4() {
-        return orderRepository.findOrderDtos();
     }
 
     static class SimpleOrderDto {
