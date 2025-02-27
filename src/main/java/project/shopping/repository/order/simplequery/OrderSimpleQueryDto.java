@@ -1,8 +1,7 @@
-package project.shopping.repository;
+package project.shopping.repository.order.simplequery;
 
 import lombok.Data;
 import project.shopping.domain.Address;
-import project.shopping.domain.Order;
 import project.shopping.domain.OrderStatus;
 
 import java.time.LocalDateTime;

@@ -51,14 +51,29 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+
+    //API
     public List<Order> findAllWithMemberDelivery() {
         return em.createQuery("select o from Order o"
-                + "join fetch o.member m"
-                + "join fetch 0.delivery d", Order.class).getResultList();
+                + " join fetch o.member m"
+                + " join fetch 0.delivery d", Order.class).getResultList();
     }
 
-    public List<OrderSimpleQueryDto> findOrderDtos() {
-        return em.createQuery("select new jpabook.jpashop.repository.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.orderStatus, o.address)"
-                        + "from Order o" + "from o.member m" + "from o.delivery d", OrderSimpleQueryDto.class).getResultList();
+    public List<Order> findAllWithItem() {
+        return em.createQuery("select distinct o form Order o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d" +
+                " join fetch o.orderItem oi" +
+                " join fetch o.item i", Order.class).getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery("select distinct o form Order o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
     }
 }
