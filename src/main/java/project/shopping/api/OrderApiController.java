@@ -11,6 +11,8 @@ import project.shopping.domain.OrderItem;
 import project.shopping.domain.OrderStatus;
 import project.shopping.repository.OrderRepository;
 import project.shopping.repository.OrderSearch;
+import project.shopping.repository.order.query.OrderFlatDto;
+import project.shopping.repository.order.query.OrderItemQueryDto;
 import project.shopping.repository.order.query.OrderQueryDto;
 import project.shopping.repository.order.query.OrderQueryRepository;
 
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,6 +66,17 @@ public class OrderApiController {
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5() {
         return orderQueryRepository.findAllByDto();
+    }
+
+    @GetMapping("/api/v6/orders")
+    public List<OrderQueryDto> ordersV6() {
+        List<OrderFlatDto> flatDtos = orderQueryRepository.findAllByDto_flat();
+
+        return flatDtos.stream().collect(groupingBy(o-> new OrderQueryDto(o.getOrderId(), o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+                mapping(o-> new OrderItemQueryDto(o.getOrderId(), o.getName(), o.getOrderPrice(), o.getCount()), toList())))
+                .entrySet().stream()
+                .map(e -> new OrderQueryDto((e.getKey().getOrderId()), e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
+                .collect(Collectors.toList());
     }
 
     @Data
