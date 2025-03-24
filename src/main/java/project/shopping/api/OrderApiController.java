@@ -1,18 +1,13 @@
 package project.shopping.api;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import project.shopping.domain.Address;
 import project.shopping.domain.Order;
-import project.shopping.domain.OrderItem;
-import project.shopping.domain.OrderStatus;
 import project.shopping.repository.OrderRepository;
 import project.shopping.repository.order.query.OrderDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
