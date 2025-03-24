@@ -12,26 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // API를 설계 할때는 Entity를 파라미터로 받으면 안되고, 외부에 노출하면 안된다
-//
 
 @RestController // = @Controller + @ResponseBody
 @RequiredArgsConstructor
 public class MemberApiController {
     private final MemberService memberService;
 
-    @GetMapping("api/v1/members")
-    public List<Member> membersV1() {
-        return memberService.findMembers();
-    }
-
-    @PostMapping("api/v1/members")
-    public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member){
-        Long id = memberService.join(member);
-        return new CreateMemberResponse(id);
-    }
-
-    @PostMapping("api/v2/members")
-    public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
+    @PostMapping("api/members/save")
+    public CreateMemberResponse saveMemberApi(@RequestBody @Valid CreateMemberRequest request) {
         Member member= new Member();
         member.setName(request.getName());
 
@@ -39,15 +27,15 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
-    @PutMapping("api/v2/members/{id}")
-    public UpdateMemberResponse updateMemberV2(@PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request){
+    @PutMapping("api/members/{id}")
+    public UpdateMemberResponse updateMemberApi(@PathVariable("id") Long id, @RequestBody @Valid UpdateMemberRequest request){
         memberService.update(id, request.getName());
         Member findMember = memberService.findOneMember(id);
         return new UpdateMemberResponse(findMember.getId(), findMember.getName());
     }
 
-    @GetMapping("api/v2/members")
-    public Result membersV2() {
+    @GetMapping("api/members")
+    public Result membersApi() {
         List<MemberDto> collect = memberService.findMembers().stream()
                 .map(m -> new MemberDto(m.getName()))
                 .collect(Collectors.toList());
